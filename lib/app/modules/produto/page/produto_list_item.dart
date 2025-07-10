@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:catalogo_produto_poc/app/core/constants/rotas.dart';
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_dialog.dart';
@@ -57,9 +58,7 @@ class _ProdutoListItemState extends State<ProdutoListItem> {
           horizontalTitleGap: 6,
           contentPadding: EdgeInsets.only(right: 15, left: 7),
           onTap: () {
-            Navigator.of(
-              context,
-            ).pushNamed(Rotas.produtoForm, arguments: widget._produto);
+            Get.toNamed(Rotas.produtoForm, arguments: widget._produto);
           },
           leading:
               widget._produto.fotos == null || widget._produto.fotos!.isEmpty

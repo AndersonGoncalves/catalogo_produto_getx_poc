@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/ui/functions.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_form_field.dart';
@@ -60,7 +61,7 @@ class ProdutotCalculadoraPrecoPageState
         double.tryParse(_markupText)!,
       ).toStringAsFixed(2),
     );
-    Navigator.of(context).pop();
+    Get.back();
   }
 
   @override
@@ -116,7 +117,7 @@ class ProdutotCalculadoraPrecoPageState
         toolbarHeight: 56,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          onPressed: Navigator.of(context).pop,
+          onPressed: Get.back,
           icon: const Icon(Icons.close, size: 20),
         ),
         title: const Padding(

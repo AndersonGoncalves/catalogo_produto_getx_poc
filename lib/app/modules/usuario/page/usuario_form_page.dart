@@ -1,3 +1,4 @@
+import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -73,7 +74,7 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
 
   Future<void> _loginAnonimo() async {
     if (widget.usuarioAnonimo) {
-      Navigator.of(context).pop();
+      Get.back();
     } else {
       UsuarioController usuarioController = context.read<UsuarioController>();
       await usuarioController.loginAnonimo();
@@ -109,7 +110,7 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
     return BlocConsumer<UsuarioController, UsuarioState>(
       listener: (context, state) {
         if (state.success) {
-          Navigator.of(context).pop();
+          Get.back();
         } else if (state.error != null && state.error!.isNotEmpty) {
           Messages.of(context).showError(state.error!);
         }

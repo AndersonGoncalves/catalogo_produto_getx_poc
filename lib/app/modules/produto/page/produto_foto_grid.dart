@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:catalogo_produto_poc/app/modules/produto/page/produto_foto_page.dart';
 
 class ProdutoFotoGrid extends StatefulWidget {
@@ -21,52 +22,46 @@ class _ProdutoFotoGridState extends State<ProdutoFotoGrid> {
   bool _expanded = false;
 
   void _addFoto(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
+    Get.bottomSheet(
       isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) {
-        return ProdutoFotoPage(
-          fotoList: widget.fotoList,
-          quantidadeMaximaFotos: widget.quantidadeMaximaFotos,
-          fotoSelecionada:
-              (widget.fotoList.length == widget.quantidadeMaximaFotos) &&
-                  (widget.fotoList.isNotEmpty)
-              ? widget.fotoList[0].toString()
-              : '',
-          atualizarList: () {
-            setState(() {
-              if (widget.fotoList.isNotEmpty) {
-                _expanded = true;
-              }
-            });
-          },
-        );
-      },
+      ignoreSafeArea: false,
+      ProdutoFotoPage(
+        fotoList: widget.fotoList,
+        quantidadeMaximaFotos: widget.quantidadeMaximaFotos,
+        fotoSelecionada:
+            (widget.fotoList.length == widget.quantidadeMaximaFotos) &&
+                (widget.fotoList.isNotEmpty)
+            ? widget.fotoList[0].toString()
+            : '',
+        atualizarList: () {
+          setState(() {
+            if (widget.fotoList.isNotEmpty) {
+              _expanded = true;
+            }
+          });
+        },
+      ),
     );
   }
 
   void _updateFoto(BuildContext context, int index) {
-    showModalBottomSheet(
-      context: context,
+    Get.bottomSheet(
       isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) {
-        return ProdutoFotoPage(
-          fotoList: widget.fotoList,
-          quantidadeMaximaFotos: widget.quantidadeMaximaFotos,
-          fotoSelecionada: widget.fotoList.isNotEmpty
-              ? widget.fotoList[index].toString()
-              : '',
-          atualizarList: () {
-            setState(() {
-              if (widget.fotoList.isNotEmpty) {
-                _expanded = true;
-              }
-            });
-          },
-        );
-      },
+      ignoreSafeArea: false,
+      ProdutoFotoPage(
+        fotoList: widget.fotoList,
+        quantidadeMaximaFotos: widget.quantidadeMaximaFotos,
+        fotoSelecionada: widget.fotoList.isNotEmpty
+            ? widget.fotoList[index].toString()
+            : '',
+        atualizarList: () {
+          setState(() {
+            if (widget.fotoList.isNotEmpty) {
+              _expanded = true;
+            }
+          });
+        },
+      ),
     );
   }
 

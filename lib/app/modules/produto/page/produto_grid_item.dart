@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
@@ -61,9 +62,7 @@ class _ProdutoGridItemState extends State<ProdutoGridItem> {
         ),
         child: GestureDetector(
           onTap: () {
-            Navigator.of(
-              context,
-            ).pushNamed(Rotas.produtoDetail, arguments: widget._produto);
+            Get.toNamed(Rotas.produtoDetail, arguments: widget._produto);
           },
           child: Hero(
             tag: widget._produto.id,

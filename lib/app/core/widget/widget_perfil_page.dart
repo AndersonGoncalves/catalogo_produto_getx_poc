@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_form_field.dart';
@@ -109,7 +110,7 @@ class _WidgetPerfilPageState extends State<WidgetPerfilPage> {
                               const SizedBox(height: 20),
 
                               ElevatedButton(
-                                onPressed: Navigator.of(context).pop,
+                                onPressed: Get.back,
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),

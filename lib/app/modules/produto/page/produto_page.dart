@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
@@ -60,7 +61,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
                   toolbarHeight: 56,
                   automaticallyImplyLeading: false,
                   leading: IconButton(
-                    onPressed: Navigator.of(context).pop,
+                    onPressed: Get.back,
                     icon: const Icon(Icons.arrow_back_ios, size: 20),
                   ),
                   title: const Padding(
@@ -74,7 +75,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
                     IconButton(
                       icon: const Icon(Icons.add),
                       onPressed: () {
-                        Navigator.of(context).pushNamed(Rotas.produtoForm);
+                        Get.toNamed(Rotas.produtoForm);
                       },
                     ),
                   ],
@@ -99,8 +100,7 @@ class _ProdutoPageState extends State<ProdutoPage> {
           ),
           floatingActionButton: widget._produtoPageMode == ProdutoPageMode.list
               ? FloatingActionButton(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed(Rotas.produtoForm),
+                  onPressed: () => Get.toNamed(Rotas.produtoForm),
                   child: const Icon(Icons.add),
                 )
               : null,

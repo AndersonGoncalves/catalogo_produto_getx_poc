@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:catalogo_produto_poc/app/core/constants/rotas.dart';
@@ -23,23 +23,31 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Catálogo de Produtos',
       theme: ThemeConfig.theme,
       debugShowCheckedModeBanner: false,
       initialRoute: Rotas.home,
-      routes: {
-        Rotas.home: (_) => const RoteadorPage(),
-        Rotas.about: (_) => const WidgetAboutPage(),
-        Rotas.perfil: (_) => const WidgetPerfilPage(),
-        Rotas.carrinho: (_) => const CarrinhoPage(),
-        Rotas.produtoList: (_) =>
-            const ProdutoPage(produtoPageMode: ProdutoPageMode.list),
-        Rotas.produtoGrid: (_) =>
-            const ProdutoPage(produtoPageMode: ProdutoPageMode.grid),
-        Rotas.produtoForm: (_) => const ProdutoFormPage(),
-        Rotas.produtoDetail: (_) => const ProdutoDetailPage(),
-      },
+      // home: const RoteadorPage(),
+      getPages: [
+        GetPage(name: Rotas.home, page: () => const RoteadorPage()),
+        GetPage(name: Rotas.about, page: () => const WidgetAboutPage()),
+        GetPage(name: Rotas.perfil, page: () => const WidgetPerfilPage()),
+        GetPage(name: Rotas.carrinho, page: () => const CarrinhoPage()),
+        GetPage(
+          name: Rotas.produtoList,
+          page: () => const ProdutoPage(produtoPageMode: ProdutoPageMode.list),
+        ),
+        GetPage(
+          name: Rotas.produtoGrid,
+          page: () => const ProdutoPage(produtoPageMode: ProdutoPageMode.grid),
+        ),
+        GetPage(name: Rotas.produtoForm, page: () => const ProdutoFormPage()),
+        GetPage(
+          name: Rotas.produtoDetail,
+          page: () => const ProdutoDetailPage(),
+        ),
+      ],
       onUnknownRoute: (RouteSettings settings) {
         return CupertinoPageRoute(
           builder: (_) {

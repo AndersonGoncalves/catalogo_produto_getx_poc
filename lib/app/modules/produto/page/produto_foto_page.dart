@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_dialog.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_form_field.dart';
 
@@ -141,7 +142,7 @@ class _ProdutoFotoPageState extends State<ProdutoFotoPage> {
         toolbarHeight: 56,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          onPressed: Navigator.of(context).pop,
+          onPressed: Get.back,
           icon: const Icon(Icons.close, size: 20),
         ),
         title: Padding(

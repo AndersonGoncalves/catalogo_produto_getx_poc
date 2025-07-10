@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:catalogo_produto_poc/app/core/constants/rotas.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_dialog.dart';
@@ -44,7 +44,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   Future<void> _sair(BuildContext context) async {
     context.read<UsuarioServiceImpl>().logout().then((value) {
       if (!context.mounted) return;
-      Navigator.of(context).pushReplacementNamed(Rotas.home);
+      Get.offNamed(Rotas.home);
     });
   }
 
@@ -69,33 +69,28 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
             ),
           ),
           _createItem(Icons.home, 'Home', () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushReplacementNamed(Rotas.home);
+            Get.back();
+            Get.offNamed(Rotas.home);
           }),
           const Divider(),
           _createItem(Icons.local_offer, 'Produtos', () {
-            Navigator.of(context).popAndPushNamed(Rotas.produtoList);
+            Get.offAndToNamed(Rotas.produtoList);
           }),
           const Divider(),
           _createItem(Icons.account_circle, 'Perfil', () {
             if (context.read<UsuarioServiceImpl>().user.isAnonymous) {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  maintainState: true,
-                  fullscreenDialog: false,
-                  allowSnapshotting: true,
-                  builder: (_) {
-                    return const UsuarioFormPage(usuarioAnonimo: true);
-                  },
-                ),
+              Get.back();
+              Get.to(
+                () => const UsuarioFormPage(usuarioAnonimo: true),
+                transition: Transition.cupertino,
+                fullscreenDialog: false,
               );
             } else {
-              Navigator.of(context).popAndPushNamed(Rotas.perfil);
+              Get.offAndToNamed(Rotas.perfil);
             }
           }),
           _createItem(Icons.error_outline, 'Sobre', () {
-            Navigator.of(context).popAndPushNamed(Rotas.about);
+            Get.offAndToNamed(Rotas.about);
           }),
           const Divider(),
           _createItem(Icons.exit_to_app, 'Sair', () {

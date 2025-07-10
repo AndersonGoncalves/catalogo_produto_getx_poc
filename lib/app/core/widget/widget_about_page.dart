@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:catalogo_produto_poc/app/core/ui/theme_extensions.dart';
 import 'package:catalogo_produto_poc/app/core/ui/url_launcher.dart';
@@ -39,7 +40,7 @@ class _WidgetAboutPageState extends State<WidgetAboutPage> {
               toolbarHeight: 56,
               automaticallyImplyLeading: false,
               leading: IconButton(
-                onPressed: Navigator.of(context).pop,
+                onPressed: Get.back,
                 icon: const Icon(Icons.close),
               ),
               title: Padding(

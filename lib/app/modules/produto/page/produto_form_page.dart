@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:validatorless/validatorless.dart';
@@ -61,25 +62,21 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
   }
 
   void _calcularPrecoVenda() {
-    showModalBottomSheet(
-      context: context,
+    Get.bottomSheet(
+      ProdutoCalculadoraPrecoPage(
+        precoCusto:
+            (double.tryParse(onlyNumber(_precoCustoController.text))! / 100),
+        precoVenda:
+            double.tryParse(onlyNumber(_precoVendaController.text))! / 100,
+        atualizar: (custo, venda) {
+          setState(() {
+            _precoCustoController.text = custo;
+            _precoVendaController.text = venda;
+          });
+        },
+      ),
       isScrollControlled: true,
-      useSafeArea: true,
-      //fullscreenDialog: true,
-      builder: (_) {
-        return ProdutoCalculadoraPrecoPage(
-          precoCusto:
-              (double.tryParse(onlyNumber(_precoCustoController.text))! / 100),
-          precoVenda:
-              double.tryParse(onlyNumber(_precoVendaController.text))! / 100,
-          atualizar: (custo, venda) {
-            setState(() {
-              _precoCustoController.text = custo;
-              _precoVendaController.text = venda;
-            });
-          },
-        );
-      },
+      ignoreSafeArea: false,
     );
   }
 
@@ -127,7 +124,7 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
     super.didChangeDependencies();
 
     if (_formData.isEmpty) {
-      final arg = ModalRoute.of(context)?.settings.arguments;
+      final arg = Get.arguments;
       bool visualizandoDados = (arg != null);
       if (visualizandoDados) {
         final produto = arg as Produto;
@@ -176,7 +173,7 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
         if (!state.isLoading &&
             state.error == null &&
             ModalRoute.of(context)?.isCurrent == true) {
-          Navigator.of(context).pop();
+          Get.back();
         }
       },
       builder: (context, state) {
@@ -217,7 +214,7 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
                                 foregroundColor: Colors.black,
 
                                 leading: IconButton(
-                                  onPressed: Navigator.of(context).pop,
+                                  onPressed: Get.back,
                                   icon: const Icon(
                                     Icons.arrow_back_ios,
                                     size: 20,

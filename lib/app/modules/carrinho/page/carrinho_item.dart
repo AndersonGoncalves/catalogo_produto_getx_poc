@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:catalogo_produto_poc/app/core/models/carrinho.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/cubit/carrinho_controller.dart';
@@ -29,13 +30,13 @@ class CarrinhoItem extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(ctx).pop(false);
+                  Get.back(result: false);
                 },
                 child: const Text('Não'),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.of(ctx).pop(true);
+                  Get.back(result: true);
                 },
                 child: const Text('Sim'),
               ),

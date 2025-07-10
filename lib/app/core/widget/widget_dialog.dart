@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_button.dart';
 
 class WidgetDialog {
@@ -25,13 +26,13 @@ class WidgetDialog {
           WidgetTextButton(
             nao,
             onPressed: () {
-              Navigator.of(ctx).pop(false);
+              Get.back(result: false);
             },
           ),
           WidgetTextButton(
             sim,
             onPressed: () {
-              Navigator.of(ctx).pop(true);
+              Get.back(result: true);
             },
           ),
         ],
@@ -60,7 +61,7 @@ class WidgetDialog {
           WidgetTextButton(
             'Ok',
             onPressed: () {
-              Navigator.of(ctx).pop();
+              Get.back();
             },
           ),
         ],
