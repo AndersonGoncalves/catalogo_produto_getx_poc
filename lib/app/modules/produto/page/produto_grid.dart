@@ -86,7 +86,7 @@ class _ProdutoGridState extends State<ProdutoGrid> {
                             mainAxisSpacing: 20,
                           ),
                       itemBuilder: (ctx, index) => ProdutoGridItem(
-                        key: GlobalObjectKey(produtos[index]),
+                        key: Key('grid_${produtos[index].id}'),
                         produto: produtos[index],
                       ),
                     ),

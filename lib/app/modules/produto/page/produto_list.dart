@@ -81,7 +81,7 @@ class _ProdutoListState extends State<ProdutoList> {
                         produtos.isEmpty
                             ? const WidgetRegistroNaoEncontradoPage()
                             : ProdutoListItem(
-                                key: GlobalObjectKey(produtos[index]),
+                                key: Key('list_${produtos[index].id}'),
                                 produto: produtos[index],
                               ),
                       ],
