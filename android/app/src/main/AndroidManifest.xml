@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Produtos Bloc Cubit"
+        android:label="Produtos GetX"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

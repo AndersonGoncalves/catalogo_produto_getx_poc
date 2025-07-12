@@ -5,9 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:catalogo_produto_poc/app/app_widget.dart';
 import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_controller.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
-import 'package:catalogo_produto_poc/app/services/produto/produto_service_impl.dart';
-import 'package:catalogo_produto_poc/app/modules/produto/cubit/produto_controller.dart';
-import 'package:catalogo_produto_poc/app/repositories/produto/produto_repository_impl.dart';
 import 'package:catalogo_produto_poc/app/repositories/usuario/usuario_repository_impl.dart';
 import 'package:catalogo_produto_poc/app/repositories/carrinho/carrinho_repository_impl.dart';
 import 'package:catalogo_produto_poc/app/services/carrinho/carrinho_service_impl.dart';
@@ -39,23 +36,6 @@ class AppProvider extends StatelessWidget {
               firebaseAuth: FirebaseAuth.instance,
             );
             return UsuarioServiceImpl(usuarioRepository: usuarioRepository);
-          },
-        ),
-
-        //Produto
-        BlocProvider<ProdutoController>(
-          create: (context) {
-            final usuarioRepository = UsuarioRepositoryImpl(
-              firebaseAuth: FirebaseAuth.instance,
-            );
-            return ProdutoController(
-              produtoService: ProdutoServiceImpl(
-                produtoRepository: ProdutoRepositoryImpl(
-                  token: usuarioRepository.user.refreshToken.toString(),
-                  produtos: [],
-                ),
-              ),
-            );
           },
         ),
 

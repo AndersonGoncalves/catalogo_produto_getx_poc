@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:603531068009:android:483378cf03fc16a793d8f8",
         "android_client_info": {
-          "package_name": "br.com.andersongoncalvesflorencio.catalogo_produto_bloc_cubit_poc"
+          "package_name": "br.com.andersongoncalvesflorencio.catalogo_produto_getx_poc"
         }
       },
       "oauth_client": [

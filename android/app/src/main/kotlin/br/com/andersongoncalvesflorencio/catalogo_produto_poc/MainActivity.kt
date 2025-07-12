@@ -1,4 +1,4 @@
-package br.com.andersongoncalvesflorencio.catalogo_produto_bloc_cubit_poc
+package br.com.andersongoncalvesflorencio.catalogo_produto_getx_poc
 
 import io.flutter.embedding.android.FlutterActivity
 
