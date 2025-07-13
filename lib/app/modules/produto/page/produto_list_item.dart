@@ -36,7 +36,7 @@ class _ProdutoListItemState extends State<ProdutoListItem> {
         child: const Icon(Icons.delete, color: Colors.white, size: 30),
       ),
       confirmDismiss: (_) async {
-        bool? confirmed = await WidgetDialog(context, 'Não', 'Sim').confirm(
+        bool? confirmed = await WidgetDialog('Não', 'Sim').confirm(
           titulo: 'Atenção',
           pergunta: 'Deseja excluir o produto?',
           onConfirm: () async {

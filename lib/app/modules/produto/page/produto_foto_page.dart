@@ -103,16 +103,12 @@ class _ProdutoFotoPageState extends State<ProdutoFotoPage> {
       if ((_fotoUrlController.text.isNotEmpty) &&
               (!urlValida(_fotoUrlController.text)) ||
           (_fotoUrlController.text.isEmpty)) {
-        WidgetDialog(
-          context,
-          'Não',
-          'Sim',
-        ).ok(titulo: 'Atenção', frase: 'Url inválida');
+        WidgetDialog('Não', 'Sim').ok(titulo: 'Atenção', frase: 'Url inválida');
         return;
       }
       if (!widget.fotoList.contains(_fotoUrlController.text)) {
         if (widget.fotoList.length == widget.quantidadeMaximaFotos) {
-          WidgetDialog(context, 'Não', 'Sim').ok(
+          WidgetDialog('Não', 'Sim').ok(
             titulo: 'Atenção',
             frase:
                 'Quantidade máxima permitida ${widget.quantidadeMaximaFotos}.',

@@ -94,7 +94,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           const Divider(),
           _createItem(Icons.exit_to_app, 'Sair', () {
             if (Get.find<UsuarioServiceImpl>().user?.isAnonymous ?? true) {
-              WidgetDialog(context, 'Não', 'Sim').confirm(
+              WidgetDialog('Não', 'Sim').confirm(
                 titulo: 'Atenção',
                 pergunta:
                     'Deseja sair da Aplicaçao? Irá perder todos os seus dados.',
