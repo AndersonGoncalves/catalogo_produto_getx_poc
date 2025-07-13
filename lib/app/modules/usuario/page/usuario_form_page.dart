@@ -1,13 +1,11 @@
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_loading_page.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_form_field.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_button.dart';
-import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_controller.dart';
-import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_state.dart';
+import 'package:catalogo_produto_poc/app/modules/usuario/controller/usuario_controller.dart';
 
 enum AuthMode { signup, login }
 
@@ -27,6 +25,8 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final Map<String, String> _formData = {'email': '', 'password': ''};
+
+  final UsuarioController controller = Get.find<UsuarioController>();
 
   AnimationController? _controller;
   bool get _isLogin => _authMode == AuthMode.login;
@@ -48,7 +48,7 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
 
     if (formValid) {
       _formKey.currentState?.save();
-      UsuarioController usuarioController = context.read<UsuarioController>();
+      UsuarioController usuarioController = Get.find<UsuarioController>();
 
       if (_isLogin) {
         await usuarioController.login(
@@ -76,7 +76,7 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
     if (widget.usuarioAnonimo) {
       Get.back();
     } else {
-      UsuarioController usuarioController = context.read<UsuarioController>();
+      UsuarioController usuarioController = Get.find<UsuarioController>();
       await usuarioController.loginAnonimo();
     }
   }
@@ -95,6 +95,34 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
       vsync: this,
       duration: const Duration(milliseconds: 700),
     );
+
+    ever(controller.successObservable, (bool success) {
+      if (success) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Get.back();
+            controller.clearSuccess();
+          }
+        });
+      }
+    });
+
+    ever(controller.errorObservable, (String error) {
+      if (error.isNotEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Get.snackbar(
+              'Erro',
+              error,
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.red,
+              colorText: Colors.white,
+            );
+            controller.clearError();
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -107,324 +135,306 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UsuarioController, UsuarioState>(
-      listener: (context, state) {
-        if (state.success) {
-          Get.back();
-        } else if (state.error != null && state.error!.isNotEmpty) {
-          Messages.of(context).showError(state.error!);
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          body: state.isLoading
-              ? WidgetLoadingPage(
-                  label: 'Carregando...',
-                  labelColor: Colors.white,
-                )
-              : SafeArea(
-                  child: Stack(
-                    children: <Widget>[
-                      Center(
-                        child: SingleChildScrollView(
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
+    return Obx(() {
+      return Scaffold(
+        body: controller.isLoading
+            ? WidgetLoadingPage(
+                label: 'Carregando...',
+                labelColor: Colors.white,
+              )
+            : SafeArea(
+                child: Stack(
+                  children: <Widget>[
+                    Center(
+                      child: SingleChildScrollView(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                child: Card(
+                                  color: Theme.of(context).canvasColor,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Card(
-                                    color: Theme.of(context).canvasColor,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Form(
-                                      key: _formKey,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 15,
-                                        ),
-                                        child: Column(
-                                          children: <Widget>[
-                                            SizedBox(
-                                              height: 110,
-                                              width: 110,
-                                              child: Image.asset(
-                                                'assets/icon/icon-adaptive.png',
+                                  child: Form(
+                                    key: _formKey,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 15,
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 110,
+                                            width: 110,
+                                            child: Image.asset(
+                                              'assets/icon/icon-adaptive.png',
+                                            ),
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              'PoC',
+                                              style: TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.primary,
                                               ),
                                             ),
-                                            FittedBox(
-                                              child: Text(
-                                                'PoC',
-                                                style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).colorScheme.primary,
-                                                ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 5,
+                                              bottom: 5,
+                                              left: 10,
+                                              right: 10,
+                                            ),
+                                            child: Text(
+                                              _isLogin
+                                                  ? 'Informe um email e uma senha de 6 dígitos e tenha acesso ao App'
+                                                  : 'Informe um email e uma senha de 6 dígitos e registre-se no App',
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                fontSize: 16,
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 5,
-                                                bottom: 5,
-                                                left: 10,
-                                                right: 10,
-                                              ),
-                                              child: Text(
-                                                _isLogin
-                                                    ? 'Informe um email e uma senha de 6 dígitos e tenha acesso ao App'
-                                                    : 'Informe um email e uma senha de 6 dígitos e registre-se no App',
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                            _isLogin
-                                                ? const SizedBox()
-                                                : WidgetTextFormField(
-                                                    labelText: 'Nome',
-                                                    keyboardType: TextInputType
-                                                        .emailAddress,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    prefixIcon: const Icon(
-                                                      Icons
-                                                          .account_circle_outlined,
-                                                    ),
-                                                    isDense: true,
-                                                    border: true,
-                                                    onSaved: (value) =>
-                                                        _formData['name'] =
-                                                            value ?? '',
+                                          ),
+                                          _isLogin
+                                              ? const SizedBox()
+                                              : WidgetTextFormField(
+                                                  labelText: 'Nome',
+                                                  keyboardType: TextInputType
+                                                      .emailAddress,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  prefixIcon: const Icon(
+                                                    Icons
+                                                        .account_circle_outlined,
                                                   ),
-                                            WidgetTextFormField(
-                                              key: const Key('email_key'),
-                                              labelText: 'Email',
-                                              keyboardType:
-                                                  TextInputType.emailAddress,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              prefixIcon: const Icon(
-                                                Icons.email_outlined,
-                                              ),
-                                              isDense: true,
-                                              border: true,
-                                              controller: _emailController,
-                                              validator: (value) {
-                                                final email = value ?? '';
-                                                if (email.isEmpty ||
-                                                    !email.contains('@')) {
-                                                  return 'Informe um email válido';
-                                                }
-                                                return null;
-                                              },
-                                              onSaved: (value) =>
-                                                  _formData['email'] =
-                                                      value ?? '',
+                                                  isDense: true,
+                                                  border: true,
+                                                  onSaved: (value) =>
+                                                      _formData['name'] =
+                                                          value ?? '',
+                                                ),
+                                          WidgetTextFormField(
+                                            key: const Key('email_key'),
+                                            labelText: 'Email',
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            prefixIcon: const Icon(
+                                              Icons.email_outlined,
                                             ),
-                                            WidgetTextFormField(
-                                              labelText: 'Senha',
-                                              prefixIcon: const Icon(
-                                                Icons.lock_outline,
-                                              ),
-                                              isDense: true,
-                                              border: true,
-                                              keyboardType: TextInputType.text,
-                                              textInputAction:
-                                                  TextInputAction.next,
-                                              controller: _passwordController,
-                                              obscureText: true,
-                                              validator: (value) {
-                                                final password = value ?? '';
-                                                if (password.isEmpty ||
-                                                    password.length < 5) {
-                                                  return 'Informe uma senha válida';
-                                                }
-                                                return null;
-                                              },
-                                              onSaved: (password) =>
-                                                  _formData['password'] =
-                                                      password ?? '',
+                                            isDense: true,
+                                            border: true,
+                                            controller: _emailController,
+                                            validator: (value) {
+                                              final email = value ?? '';
+                                              if (email.isEmpty ||
+                                                  !email.contains('@')) {
+                                                return 'Informe um email válido';
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) =>
+                                                _formData['email'] =
+                                                    value ?? '',
+                                          ),
+                                          WidgetTextFormField(
+                                            labelText: 'Senha',
+                                            prefixIcon: const Icon(
+                                              Icons.lock_outline,
                                             ),
-                                            _isLogin
-                                                ? const SizedBox()
-                                                : WidgetTextFormField(
-                                                    labelText:
-                                                        'Confirmar Senha',
-                                                    prefixIcon: const Icon(
-                                                      Icons.lock_outline,
-                                                    ),
-                                                    isDense: true,
-                                                    border: true,
-                                                    keyboardType:
-                                                        TextInputType.text,
-                                                    textInputAction:
-                                                        TextInputAction.next,
-                                                    obscureText: true,
-                                                    validator: _isLogin
-                                                        ? null
-                                                        : (value) {
-                                                            final password =
-                                                                value ?? '';
-                                                            if (password !=
-                                                                _passwordController
-                                                                    .text) {
-                                                              return 'Senhas informadas não conferem';
-                                                            }
-                                                            return null;
-                                                          },
+                                            isDense: true,
+                                            border: true,
+                                            keyboardType: TextInputType.text,
+                                            textInputAction:
+                                                TextInputAction.next,
+                                            controller: _passwordController,
+                                            obscureText: true,
+                                            validator: (value) {
+                                              final password = value ?? '';
+                                              if (password.isEmpty ||
+                                                  password.length < 5) {
+                                                return 'Informe uma senha válida';
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (password) =>
+                                                _formData['password'] =
+                                                    password ?? '',
+                                          ),
+                                          _isLogin
+                                              ? const SizedBox()
+                                              : WidgetTextFormField(
+                                                  labelText: 'Confirmar Senha',
+                                                  prefixIcon: const Icon(
+                                                    Icons.lock_outline,
                                                   ),
-                                            _isLogin
-                                                ? const SizedBox()
-                                                : Column(
-                                                    children: [
-                                                      Text(
-                                                        'Ao usar o app, você concorda com nossos',
-                                                        style: const TextStyle(
-                                                          fontSize: 9,
+                                                  isDense: true,
+                                                  border: true,
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  textInputAction:
+                                                      TextInputAction.next,
+                                                  obscureText: true,
+                                                  validator: _isLogin
+                                                      ? null
+                                                      : (value) {
+                                                          final password =
+                                                              value ?? '';
+                                                          if (password !=
+                                                              _passwordController
+                                                                  .text) {
+                                                            return 'Senhas informadas não conferem';
+                                                          }
+                                                          return null;
+                                                        },
+                                                ),
+                                          _isLogin
+                                              ? const SizedBox()
+                                              : Column(
+                                                  children: [
+                                                    Text(
+                                                      'Ao usar o app, você concorda com nossos',
+                                                      style: const TextStyle(
+                                                        fontSize: 9,
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {},
+                                                      child: Text(
+                                                        'Termos de Uso & Política de Privacidade',
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Theme.of(
+                                                            context,
+                                                          ).colorScheme.primary,
                                                         ),
                                                       ),
-                                                      InkWell(
-                                                        onTap: () {},
-                                                        child: Text(
-                                                          'Termos de Uso & Política de Privacidade',
-                                                          style: TextStyle(
-                                                            fontSize: 11,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Theme.of(
-                                                                      context,
-                                                                    )
-                                                                    .colorScheme
-                                                                    .primary,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                            const SizedBox(height: 20),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 6,
+                                                    ),
+                                                  ],
+                                                ),
+                                          const SizedBox(height: 20),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              bottom: 6,
+                                            ),
+                                            child: ElevatedButton(
+                                              key: const Key(
+                                                'usuario_form_entrar_key',
                                               ),
-                                              child: ElevatedButton(
-                                                key: const Key(
-                                                  'usuario_form_entrar_key',
+                                              onPressed: _submit,
+                                              style: ElevatedButton.styleFrom(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
-                                                onPressed: _submit,
-                                                style: ElevatedButton.styleFrom(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          5,
-                                                        ),
-                                                  ),
-                                                  minimumSize: Size(
-                                                    double.infinity,
-                                                    48,
-                                                  ),
-                                                  elevation: 0,
-                                                  tapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
+                                                minimumSize: Size(
+                                                  double.infinity,
+                                                  48,
                                                 ),
-                                                child: Text(
-                                                  _authMode == AuthMode.login
-                                                      ? 'ENTRAR'
-                                                      : 'REGISTRAR',
-                                                ),
+                                                elevation: 0,
+                                                tapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                              ),
+                                              child: Text(
+                                                _authMode == AuthMode.login
+                                                    ? 'ENTRAR'
+                                                    : 'REGISTRAR',
                                               ),
                                             ),
-                                            _authMode == AuthMode.login
-                                                ? Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: SignInButton(
-                                                          Buttons.Google,
-                                                          text:
-                                                              'Login com Google',
-                                                          elevation: 1,
-                                                          padding:
-                                                              const EdgeInsets.all(
+                                          ),
+                                          _authMode == AuthMode.login
+                                              ? Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: SignInButton(
+                                                        Buttons.Google,
+                                                        text:
+                                                            'Login com Google',
+                                                        elevation: 1,
+                                                        padding:
+                                                            const EdgeInsets.all(
+                                                              5,
+                                                            ),
+                                                        shape: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
                                                                 5,
                                                               ),
-                                                          shape: OutlineInputBorder(
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  5,
-                                                                ),
-                                                            borderSide:
-                                                                BorderSide.none,
-                                                          ),
-                                                          onPressed: () {
-                                                            context
-                                                                .read<
-                                                                  UsuarioController
-                                                                >()
-                                                                .googleLogin();
-                                                          },
+                                                          borderSide:
+                                                              BorderSide.none,
                                                         ),
+                                                        onPressed: () {
+                                                          Get.find()<
+                                                                UsuarioController
+                                                              >()
+                                                              .googleLogin();
+                                                        },
                                                       ),
-                                                    ],
-                                                  )
-                                                : SizedBox.shrink(),
-                                            _isLogin
-                                                ? WidgetTextButton(
-                                                    'Esqueceu a senha?',
-                                                    onPressed: () async {
-                                                      await context
-                                                          .read<
-                                                            UsuarioController
-                                                          >()
-                                                          .esqueceuSenha(
-                                                            _emailController
-                                                                .text,
-                                                          );
-                                                      Messages.of(context).info(
-                                                        'Recuperação de senha enviada para email informado',
-                                                      );
-                                                    },
-                                                  )
-                                                : SizedBox.shrink(),
+                                                    ),
+                                                  ],
+                                                )
+                                              : SizedBox.shrink(),
+                                          _isLogin
+                                              ? WidgetTextButton(
+                                                  'Esqueceu a senha?',
+                                                  onPressed: () async {
+                                                    await Get.find<
+                                                          UsuarioController
+                                                        >()
+                                                        .esqueceuSenha(
+                                                          _emailController.text,
+                                                        );
+                                                    Messages.of(context).info(
+                                                      'Recuperação de senha enviada para email informado',
+                                                    );
+                                                  },
+                                                )
+                                              : SizedBox.shrink(),
 
-                                            widget.usuarioAnonimo
-                                                ? const SizedBox()
-                                                : WidgetTextButton(
-                                                    _isLogin
-                                                        ? 'DESEJA REGISTRAR?'
-                                                        : 'JÁ POSSUI CONTA?',
-                                                    onPressed: _switchAuthMode,
-                                                  ),
-                                            WidgetTextButton(
-                                              'NÃO QUERO ME REGISTRAR!',
-                                              foregroundColor: Colors.red,
-                                              onPressed: _loginAnonimo,
-                                            ),
-                                          ],
-                                        ),
+                                          widget.usuarioAnonimo
+                                              ? const SizedBox()
+                                              : WidgetTextButton(
+                                                  _isLogin
+                                                      ? 'DESEJA REGISTRAR?'
+                                                      : 'JÁ POSSUI CONTA?',
+                                                  onPressed: _switchAuthMode,
+                                                ),
+                                          WidgetTextButton(
+                                            'NÃO QUERO ME REGISTRAR!',
+                                            foregroundColor: Colors.red,
+                                            onPressed: _loginAnonimo,
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-        );
-      },
-    );
+              ),
+      );
+    });
   }
 }

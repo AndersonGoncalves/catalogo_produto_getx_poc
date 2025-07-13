@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_controller.dart';
+import 'package:catalogo_produto_poc/app/modules/usuario/controller/usuario_controller.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
 import 'package:catalogo_produto_poc/app/services/carrinho/carrinho_service_impl.dart';

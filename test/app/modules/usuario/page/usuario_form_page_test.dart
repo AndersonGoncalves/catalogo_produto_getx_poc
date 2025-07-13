@@ -1,11 +1,11 @@
-import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_controller.dart';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:catalogo_produto_poc/app/modules/usuario/page/usuario_form_page.dart';
 import 'package:catalogo_produto_poc/app/repositories/usuario/usuario_repository.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:catalogo_produto_poc/app/modules/usuario/controller/usuario_controller.dart';
 
 class FakeUsuarioRepository implements UsuarioRepository {
   @override
@@ -50,7 +50,7 @@ class FakeUsuarioRepository implements UsuarioRepository {
   }
 
   @override
-  User get user => throw UnimplementedError();
+  User? get user => throw UnimplementedError();
 }
 
 class MockUsuarioServiceImpl extends UsuarioServiceImpl {
@@ -62,30 +62,33 @@ void main() async {
     testWidgets(
       'deve exibir o campo de email na tela quando estiver com usuario anônimo',
       (tester) async {
+        // Configura GetX para testes
+        Get.testMode = true;
+        Get.put<UsuarioController>(
+          UsuarioController(usuarioService: MockUsuarioServiceImpl()),
+        );
+
         await tester.pumpWidget(
-          MaterialApp(
-            home: BlocProvider<UsuarioController>(
-              create: (_) =>
-                  UsuarioController(usuarioService: MockUsuarioServiceImpl()),
-              child: const UsuarioFormPage(usuarioAnonimo: true),
-            ),
-          ),
+          GetMaterialApp(home: const UsuarioFormPage(usuarioAnonimo: true)),
         );
 
         final emailField = find.byKey(const Key('email_key'));
         expect(emailField, findsOneWidget);
+
+        // Limpa o GetX após o teste
+        Get.reset();
       },
     );
 
     testWidgets('deve exibir a mensagem de email inválido', (tester) async {
+      // Configura GetX para testes
+      Get.testMode = true;
+      Get.put<UsuarioController>(
+        UsuarioController(usuarioService: MockUsuarioServiceImpl()),
+      );
+
       await tester.pumpWidget(
-        MaterialApp(
-          home: BlocProvider<UsuarioController>(
-            create: (_) =>
-                UsuarioController(usuarioService: MockUsuarioServiceImpl()),
-            child: const UsuarioFormPage(usuarioAnonimo: true),
-          ),
-        ),
+        GetMaterialApp(home: const UsuarioFormPage(usuarioAnonimo: true)),
       );
 
       final entrarButton = find.byKey(const Key('usuario_form_entrar_key'));
@@ -93,6 +96,9 @@ void main() async {
       await tester.pumpAndSettle();
       final emailError = find.text('Informe um email válido');
       expect(emailError, findsOneWidget);
+
+      // Limpa o GetX após o teste
+      Get.reset();
     });
   });
 }
