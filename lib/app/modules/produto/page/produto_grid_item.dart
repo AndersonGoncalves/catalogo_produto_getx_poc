@@ -48,7 +48,7 @@ class _ProdutoGridItemState extends State<ProdutoGridItem> {
           trailing: InkWell(
             child: Icon(Icons.shopping_cart, color: context.secondaryColor),
             onTap: () {
-              Messages.of(context).infoWithAction(
+              Messages.infoWithAction(
                 'Produto adicionado no carrinho!',
                 'DESFAZER',
                 () {

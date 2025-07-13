@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/ui/theme_extensions.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/page/carrinho_item.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
@@ -92,13 +93,7 @@ class CarrinhoPage extends StatelessWidget {
                       : () {
                           // Implementar lógica de compra
                           controller.clear();
-                          Get.snackbar(
-                            'Sucesso',
-                            'Compra realizada com sucesso!',
-                            snackPosition: SnackPosition.BOTTOM,
-                            backgroundColor: Colors.green,
-                            colorText: Colors.white,
-                          );
+                          Messages.info('Compra realizada com sucesso!');
                         },
                   style: TextButton.styleFrom(
                     foregroundColor: context.primaryColor,

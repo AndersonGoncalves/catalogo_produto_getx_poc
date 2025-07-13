@@ -111,13 +111,7 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
       if (error.isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            Get.snackbar(
-              'Erro',
-              error,
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: Colors.red,
-              colorText: Colors.white,
-            );
+            Messages.showError(error);
             controller.clearError();
           }
         });
@@ -400,7 +394,7 @@ class UsuariohFormPageState extends State<UsuarioFormPage>
                                                         .esqueceuSenha(
                                                           _emailController.text,
                                                         );
-                                                    Messages.of(context).info(
+                                                    Messages.info(
                                                       'Recuperação de senha enviada para email informado',
                                                     );
                                                   },

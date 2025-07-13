@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/exceptions/auth_exception.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
 
@@ -173,7 +174,7 @@ class UsuarioController extends GetxController {
     ever(_error, (String error) {
       if (error.isNotEmpty) {
         // Pode ser usado para mostrar snackbars de erro
-        Get.snackbar('Erro', error, snackPosition: SnackPosition.BOTTOM);
+        Messages.showError(error);
       }
     });
   }

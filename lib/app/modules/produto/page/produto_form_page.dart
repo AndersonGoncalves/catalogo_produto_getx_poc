@@ -46,7 +46,7 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
       if (error.isNotEmpty && mounted) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            Messages.of(context).showError(error);
+            Messages.showError(error);
             controller.clearError();
           }
         });
