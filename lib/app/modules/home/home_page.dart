@@ -1,13 +1,12 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_drawer.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_about_page.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
 import 'package:catalogo_produto_poc/app/modules/produto/page/produto_page.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/page/carrinho_badgee.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/page/carrinho_page.dart';
-import 'package:catalogo_produto_poc/app/modules/carrinho/cubit/carrinho_controller.dart';
-import 'package:catalogo_produto_poc/app/modules/carrinho/cubit/carrinho_state.dart';
+import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,39 +49,27 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         actions: <Widget>[
-          BlocConsumer<CarrinhoController, CarrinhoState>(
-            listener: (context, state) {
-              if (state.error != null && state.error!.isNotEmpty) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.error!)));
-              }
-            },
-            builder: (context, state) {
-              final quantidade = state.items.length;
-              return IconButton(
-                onPressed: () {
-                  _selectedPageIndex = 2;
-                  _selectPage(_selectedPageIndex);
-                },
-                icon: quantidade > 0
-                    ? Badgee(
-                        value: quantidade.toString(),
-                        child: const Icon(Icons.shopping_cart),
-                      )
-                    : const Icon(Icons.shopping_cart),
-              );
-            },
-          ),
+          Obx(() {
+            final carrinhoController = Get.find<CarrinhoController>();
+            final quantidade = carrinhoController.items.length;
+            return IconButton(
+              onPressed: () {
+                _selectedPageIndex = 2;
+                _selectPage(_selectedPageIndex);
+              },
+              icon: quantidade > 0
+                  ? Badgee(
+                      value: quantidade.toString(),
+                      child: const Icon(Icons.shopping_cart),
+                    )
+                  : const Icon(Icons.shopping_cart),
+            );
+          }),
         ],
       ),
       drawer: WidgetDrawer(
-        userName: context
-            .read<UsuarioServiceImpl>()
-            .user
-            .displayName
-            .toString(),
-        userEmail: context.read<UsuarioServiceImpl>().user.email ?? '',
+        userName: Get.find<UsuarioServiceImpl>().user?.displayName ?? 'Usuário',
+        userEmail: Get.find<UsuarioServiceImpl>().user?.email ?? '',
       ),
       body: SafeArea(
         child: Column(
@@ -115,24 +102,16 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  icon: BlocConsumer<CarrinhoController, CarrinhoState>(
-                    listener: (context, state) {
-                      if (state.error != null && state.error!.isNotEmpty) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text(state.error!)));
-                      }
-                    },
-                    builder: (context, state) {
-                      final quantidade = state.items.length;
-                      return quantidade > 0
-                          ? Badgee(
-                              value: quantidade.toString(),
-                              child: const Icon(Icons.shopping_cart),
-                            )
-                          : const Icon(Icons.shopping_cart);
-                    },
-                  ),
+                  icon: Obx(() {
+                    final carrinhoController = Get.find<CarrinhoController>();
+                    final quantidade = carrinhoController.items.length;
+                    return quantidade > 0
+                        ? Badgee(
+                            value: quantidade.toString(),
+                            child: const Icon(Icons.shopping_cart),
+                          )
+                        : const Icon(Icons.shopping_cart);
+                  }),
                   label: pages[2]['title'].toString(),
                 ),
                 BottomNavigationBarItem(

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_controller.dart';
-import 'package:catalogo_produto_poc/app/modules/carrinho/cubit/carrinho_controller.dart';
+import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
 import 'package:catalogo_produto_poc/app/services/carrinho/carrinho_service_impl.dart';
 import 'package:catalogo_produto_poc/app/repositories/usuario/usuario_repository_impl.dart';
@@ -67,7 +67,7 @@ class AppBinding extends Bindings {
     Get.lazyPut<ProdutoRepositoryImpl>(() {
       final usuarioService = Get.find<UsuarioServiceImpl>();
       return ProdutoRepositoryImpl(
-        token: usuarioService.user.refreshToken.toString(),
+        token: usuarioService.user?.refreshToken ?? '',
         produtos: [],
       );
     }, fenix: true);

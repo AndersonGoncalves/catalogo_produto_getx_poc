@@ -1,8 +1,7 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:provider/provider.dart';
 import 'package:catalogo_produto_poc/app/core/models/carrinho.dart';
-import 'package:catalogo_produto_poc/app/modules/carrinho/cubit/carrinho_controller.dart';
+import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
 
 class CarrinhoItem extends StatelessWidget {
   final Carrinho carrinho;
@@ -45,7 +44,7 @@ class CarrinhoItem extends StatelessWidget {
         );
       },
       onDismissed: (_) {
-        context.read<CarrinhoController>().remove(carrinho.produtoId!);
+        Get.find<CarrinhoController>().remove(carrinho.produtoId!);
       },
       child: Card(
         color: Colors.white,

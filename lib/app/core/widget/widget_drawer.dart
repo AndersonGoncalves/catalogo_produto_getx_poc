@@ -1,6 +1,5 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:provider/provider.dart';
 import 'package:catalogo_produto_poc/app/core/constants/rotas.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_dialog.dart';
 import 'package:catalogo_produto_poc/app/modules/usuario/page/usuario_form_page.dart';
@@ -42,7 +41,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
   }
 
   Future<void> _sair(BuildContext context) async {
-    context.read<UsuarioServiceImpl>().logout().then((value) {
+    Get.find<UsuarioServiceImpl>().logout().then((value) {
       if (!context.mounted) return;
       Get.offNamed(Rotas.home);
     });
@@ -78,7 +77,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           }),
           const Divider(),
           _createItem(Icons.account_circle, 'Perfil', () {
-            if (context.read<UsuarioServiceImpl>().user.isAnonymous) {
+            if (Get.find<UsuarioServiceImpl>().user?.isAnonymous ?? true) {
               Get.back();
               Get.to(
                 () => const UsuarioFormPage(usuarioAnonimo: true),
@@ -94,7 +93,7 @@ class _WidgetDrawerState extends State<WidgetDrawer> {
           }),
           const Divider(),
           _createItem(Icons.exit_to_app, 'Sair', () {
-            if (context.read<UsuarioServiceImpl>().user.isAnonymous) {
+            if (Get.find<UsuarioServiceImpl>().user?.isAnonymous ?? true) {
               WidgetDialog(context, 'Não', 'Sim').confirm(
                 titulo: 'Atenção',
                 pergunta:

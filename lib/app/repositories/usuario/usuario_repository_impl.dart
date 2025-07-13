@@ -11,7 +11,7 @@ class UsuarioRepositoryImpl implements UsuarioRepository {
     : _firebaseAuth = firebaseAuth;
 
   @override
-  User get user => _firebaseAuth.currentUser!;
+  User? get user => _firebaseAuth.currentUser;
 
   @override
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();

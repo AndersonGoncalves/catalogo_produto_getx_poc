@@ -6,9 +6,6 @@ import 'package:catalogo_produto_poc/app/app_widget.dart';
 import 'package:catalogo_produto_poc/app/modules/usuario/cubit/usuario_controller.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
 import 'package:catalogo_produto_poc/app/repositories/usuario/usuario_repository_impl.dart';
-import 'package:catalogo_produto_poc/app/repositories/carrinho/carrinho_repository_impl.dart';
-import 'package:catalogo_produto_poc/app/services/carrinho/carrinho_service_impl.dart';
-import 'package:catalogo_produto_poc/app/modules/carrinho/cubit/carrinho_controller.dart';
 
 class AppProvider extends StatelessWidget {
   const AppProvider({super.key});
@@ -36,18 +33,6 @@ class AppProvider extends StatelessWidget {
               firebaseAuth: FirebaseAuth.instance,
             );
             return UsuarioServiceImpl(usuarioRepository: usuarioRepository);
-          },
-        ),
-
-        //Carrinho
-        BlocProvider<CarrinhoController>(
-          create: (context) {
-            final carrinhoRepository = CarrinhoRepositoryImpl();
-            return CarrinhoController(
-              carrinhoService: CarrinhoServiceImpl(
-                carrinhoRepository: carrinhoRepository,
-              ),
-            );
           },
         ),
       ],

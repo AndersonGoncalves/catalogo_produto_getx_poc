@@ -9,7 +9,7 @@ class UsuarioServiceImpl implements UsuarioService {
     : _usuarioRepository = usuarioRepository;
 
   @override
-  User get user => _usuarioRepository.user;
+  User? get user => _usuarioRepository.user;
 
   @override
   Stream<User?> get authState => _usuarioRepository.authState;
