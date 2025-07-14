@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:catalogo_produto_poc/app/core/widget/widget_dialog_getx.dart';
+import 'package:catalogo_produto_poc/app/core/widget/widget_dialog.dart';
 
-/// Exemplos de uso da WidgetDialogGetX
+/// Exemplos de uso da WidgetDialog
 class ExemplosUsoDialog {
   /// Exemplo 1: Dialog de confirmação básico
   static Future<void> exemploConfirmacao() async {
-    await WidgetDialogGetX.confirmDialog(
+    await WidgetDialog.confirmDialog(
       titulo: 'Atenção',
       pergunta: 'Deseja realmente excluir este item?',
       onConfirm: () {
@@ -22,7 +22,7 @@ class ExemplosUsoDialog {
 
   /// Exemplo 2: Dialog OK para informação
   static Future<void> exemploOk() async {
-    await WidgetDialogGetX.okDialog(
+    await WidgetDialog.okDialog(
       titulo: 'Informação',
       frase: 'Operação realizada com sucesso!',
     );
@@ -31,16 +31,16 @@ class ExemplosUsoDialog {
   /// Exemplo 3: Dialog de loading
   static Future<void> exemploLoading() async {
     // Mostrar loading
-    WidgetDialogGetX.showLoading(title: 'Processando...');
+    WidgetDialog.showLoading(title: 'Processando...');
 
     // Simular operação
     await Future.delayed(Duration(seconds: 3));
 
     // Esconder loading
-    WidgetDialogGetX.hideLoading();
+    WidgetDialog.hideLoading();
 
     // Mostrar resultado
-    await WidgetDialogGetX.okDialog(
+    await WidgetDialog.okDialog(
       titulo: 'Concluído',
       frase: 'Processamento finalizado!',
     );
@@ -48,7 +48,7 @@ class ExemplosUsoDialog {
 
   /// Exemplo 4: Dialog de input
   static Future<void> exemploInput() async {
-    final String? nome = await WidgetDialogGetX.inputDialog(
+    final String? nome = await WidgetDialog.inputDialog(
       titulo: 'Digite seu nome',
       hint: 'Nome completo',
       validator: (value) {
@@ -71,12 +71,11 @@ class ExemplosUsoDialog {
   static Future<void> exemploSelecao() async {
     final List<String> cores = ['Vermelho', 'Verde', 'Azul', 'Amarelo'];
 
-    final String? corSelecionada =
-        await WidgetDialogGetX.selectionDialog<String>(
-          titulo: 'Escolha uma cor',
-          options: cores,
-          optionLabel: (cor) => cor,
-        );
+    final String? corSelecionada = await WidgetDialog.selectionDialog<String>(
+      titulo: 'Escolha uma cor',
+      options: cores,
+      optionLabel: (cor) => cor,
+    );
 
     if (corSelecionada != null) {
       Get.snackbar('Cor selecionada', 'Você escolheu: $corSelecionada');
@@ -85,7 +84,7 @@ class ExemplosUsoDialog {
 
   /// Exemplo 6: Dialog customizado
   static Future<void> exemploCustomizado() async {
-    await WidgetDialogGetX.customDialog(
+    await WidgetDialog.customDialog(
       titulo: 'Dialog Customizado',
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -105,7 +104,7 @@ class ExemplosUsoDialog {
 
   /// Exemplo 7: Usando a instância da classe (método tradicional)
   static Future<void> exemploInstancia() async {
-    final dialog = WidgetDialogGetX('Cancelar', 'Confirmar');
+    final dialog = WidgetDialog('Cancelar', 'Confirmar');
 
     await dialog.confirm(
       titulo: 'Logout',

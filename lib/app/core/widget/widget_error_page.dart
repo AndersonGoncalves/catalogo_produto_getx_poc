@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_drawer.dart';
-import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
+import 'package:catalogo_produto_poc/app/modules/usuario/controller/usuario_controller.dart';
 
 class WidgetErrorPage extends StatelessWidget {
   const WidgetErrorPage({super.key});
@@ -26,7 +26,7 @@ class WidgetErrorPage extends StatelessWidget {
         ),
       ),
       drawer: WidgetDrawer(
-        userEmail: Get.find<UsuarioServiceImpl>().user?.email ?? '',
+        userEmail: Get.find<UsuarioController>().user?.email ?? '',
       ),
       body: SafeArea(
         child: Center(child: Text('Ocorreu um erro na aplicação')),

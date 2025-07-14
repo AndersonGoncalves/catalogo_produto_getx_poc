@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_drawer.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_about_page.dart';
-import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
 import 'package:catalogo_produto_poc/app/modules/produto/page/produto_page.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/page/carrinho_badgee.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/page/carrinho_page.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
+import 'package:catalogo_produto_poc/app/modules/usuario/controller/usuario_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: WidgetDrawer(
-        userName: Get.find<UsuarioServiceImpl>().user?.displayName ?? 'Usuário',
-        userEmail: Get.find<UsuarioServiceImpl>().user?.email ?? '',
+        userName: Get.find<UsuarioController>().user?.displayName ?? 'Usuário',
+        userEmail: Get.find<UsuarioController>().user?.email ?? '',
       ),
       body: SafeArea(
         child: Column(

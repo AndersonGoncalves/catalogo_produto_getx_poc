@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_form_field.dart';
-import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
+import 'package:catalogo_produto_poc/app/modules/usuario/controller/usuario_controller.dart';
 
 class WidgetPerfilPage extends StatefulWidget {
   const WidgetPerfilPage({super.key});
@@ -79,7 +79,7 @@ class _WidgetPerfilPageState extends State<WidgetPerfilPage> {
                                 isDense: true,
                                 enabled: false,
                                 initialValue:
-                                    Get.find<UsuarioServiceImpl>()
+                                    Get.find<UsuarioController>()
                                         .user
                                         ?.displayName ??
                                     '',
@@ -98,9 +98,7 @@ class _WidgetPerfilPageState extends State<WidgetPerfilPage> {
                                 isDense: true,
                                 enabled: false,
                                 initialValue:
-                                    Get.find<UsuarioServiceImpl>()
-                                        .user
-                                        ?.email ??
+                                    Get.find<UsuarioController>().user?.email ??
                                     '',
                                 border: true,
                               ),

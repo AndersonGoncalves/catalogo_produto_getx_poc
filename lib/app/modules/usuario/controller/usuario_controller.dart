@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/exceptions/auth_exception.dart';
 import 'package:catalogo_produto_poc/app/services/usuario/usuario_service_impl.dart';
@@ -43,6 +44,10 @@ class UsuarioController extends GetxController {
     _isLoading.value = false;
     _success.value = false;
   }
+
+  User? get user => _usuarioService.user;
+
+  Stream<User?> get authState => _usuarioService.authState;
 
   Future<void> register(String name, String email, String password) async {
     _setLoading(true);
