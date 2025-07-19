@@ -1,7 +1,7 @@
-import 'package:intl/intl.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/ui/functions.dart';
+import 'package:catalogo_produto_poc/app/core/ui/format_currency.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_text_form_field.dart';
 
 class ProdutoCalculadoraPrecoPage extends StatefulWidget {
@@ -101,12 +101,8 @@ class ProdutotCalculadoraPrecoPageState
 
   @override
   Widget build(BuildContext context) {
-    final formatCurrency = NumberFormat.currency(
-      locale: 'pt_BR',
-      symbol: 'R\$',
-      decimalDigits: 2,
-    );
-    final formatPercentual = NumberFormat.currency(locale: 'pt_BR', symbol: '');
+    final formatCurrency = FormatCurrency();
+    final formatPercentual = FormatCurrency.noSymbol;
 
     return Scaffold(
       appBar: AppBar(
@@ -305,7 +301,7 @@ class ProdutotCalculadoraPrecoPageState
                                       ),
                                       FittedBox(
                                         child: Text(
-                                          ' ${formatPercentual.format(percentualLucroMarkup(double.tryParse(_precoCustoText)!, precoVendaTemp))} %',
+                                          ' ${formatPercentual.formatPercentual(percentualLucroMarkup(double.tryParse(_precoCustoText)!, precoVendaTemp))}',
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
                                             color: Colors.black,

@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/ui/messages.dart';
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 import 'package:catalogo_produto_poc/app/core/ui/theme_extensions.dart';
 import 'package:catalogo_produto_poc/app/core/constants/rotas.dart';
+import 'package:catalogo_produto_poc/app/core/ui/format_currency.dart';
 import 'package:catalogo_produto_poc/app/modules/carrinho/controller/carrinho_controller.dart';
 
 class ProdutoGridItem extends StatefulWidget {
@@ -20,12 +20,7 @@ class ProdutoGridItem extends StatefulWidget {
 class _ProdutoGridItemState extends State<ProdutoGridItem> {
   @override
   Widget build(BuildContext context) {
-    final formatCurrency = NumberFormat.currency(
-      locale: 'pt_BR',
-      symbol: 'R\$',
-      decimalDigits: 2,
-    );
-
+    final formatCurrency = FormatCurrency();
     final carrinho = Get.find<CarrinhoController>();
 
     return ClipRRect(

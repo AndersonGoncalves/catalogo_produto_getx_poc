@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:catalogo_produto_poc/app/core/constants/rotas.dart';
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 import 'package:catalogo_produto_poc/app/core/widget/widget_dialog.dart';
+import 'package:catalogo_produto_poc/app/core/utils/currency_formatter.dart';
 import 'package:catalogo_produto_poc/app/modules/produto/controller/produto_controller.dart';
 
 class ProdutoListItem extends StatefulWidget {
@@ -19,11 +19,7 @@ class ProdutoListItem extends StatefulWidget {
 class _ProdutoListItemState extends State<ProdutoListItem> {
   @override
   Widget build(BuildContext context) {
-    final formatCurrency = NumberFormat.currency(
-      locale: 'pt_BR',
-      symbol: 'R\$',
-      decimalDigits: 2,
-    );
+    final formatCurrency = FormatCurrency();
 
     return Dismissible(
       key: Key(widget._produto.id),
