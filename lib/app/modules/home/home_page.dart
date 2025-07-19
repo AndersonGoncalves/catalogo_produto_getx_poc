@@ -59,10 +59,18 @@ class _HomePageState extends State<HomePage> {
               },
               icon: quantidade > 0
                   ? Badgee(
+                      right: 0,
+                      top: 0,
                       value: quantidade.toString(),
-                      child: const Icon(Icons.shopping_cart),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(Icons.shopping_cart),
+                      ),
                     )
-                  : const Icon(Icons.shopping_cart),
+                  : Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: const Icon(Icons.shopping_cart),
+                    ),
             );
           }),
         ],
