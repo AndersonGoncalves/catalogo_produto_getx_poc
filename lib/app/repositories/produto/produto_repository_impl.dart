@@ -5,7 +5,7 @@ import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 import 'package:catalogo_produto_poc/app/core/exceptions/http_exception.dart';
 import 'package:catalogo_produto_poc/app/repositories/produto/produto_repository.dart';
 
-class ProdutoRepositoryImpl extends ProdutoRepository {
+class ProdutoRepositoryImpl implements ProdutoRepository {
   final String _token;
   final List<Produto> _produtos;
 

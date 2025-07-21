@@ -3,7 +3,7 @@ import 'package:catalogo_produto_poc/app/core/models/carrinho.dart';
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 import 'package:catalogo_produto_poc/app/repositories/carrinho/carrinho_repository.dart';
 
-class CarrinhoRepositoryImpl extends CarrinhoRepository {
+class CarrinhoRepositoryImpl implements CarrinhoRepository {
   Map<String, Carrinho> _items = {};
 
   @override

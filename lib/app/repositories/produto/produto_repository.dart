@@ -1,6 +1,6 @@
 import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 
-abstract class ProdutoRepository {
+abstract interface class ProdutoRepository {
   List<Produto> get produtos;
   void add(Produto model);
   Future<void> get();

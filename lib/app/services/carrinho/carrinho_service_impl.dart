@@ -3,7 +3,7 @@ import 'package:catalogo_produto_poc/app/core/models/produto.dart';
 import 'package:catalogo_produto_poc/app/services/carrinho/carrinho_service.dart';
 import 'package:catalogo_produto_poc/app/repositories/carrinho/carrinho_repository.dart';
 
-class CarrinhoServiceImpl extends CarrinhoService {
+class CarrinhoServiceImpl implements CarrinhoService {
   final CarrinhoRepository _carrinhoRepository;
 
   CarrinhoServiceImpl({required CarrinhoRepository carrinhoRepository})
