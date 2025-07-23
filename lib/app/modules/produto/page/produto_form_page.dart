@@ -212,28 +212,81 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
                             SliverAppBar(
                               elevation: 0,
                               toolbarHeight: 56,
-                              automaticallyImplyLeading: true,
+                              automaticallyImplyLeading: false,
                               pinned: true,
                               expandedHeight: _fotos.isEmpty ? 56 : 300,
                               flexibleSpace: FlexibleSpaceBar(
-                                title: Text('Produto'),
+                                title: _fotos.isEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(left: 3),
+                                        child: Text(
+                                          'Produto',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                                titlePadding: _fotos.isEmpty
+                                    ? const EdgeInsets.only(
+                                        left: 16,
+                                        bottom: 16,
+                                      )
+                                    : EdgeInsets.zero,
+
                                 background: _fotos.isEmpty
                                     ? const SizedBox()
-                                    : Image.network(
-                                        _fotos[0],
-                                        fit: BoxFit.cover,
+                                    : Stack(
+                                        fit: StackFit.expand,
+                                        children: [
+                                          Image.network(
+                                            _fotos[0],
+                                            fit: BoxFit.cover,
+                                          ),
+                                          // Gradiente para melhorar legibilidade do título quando ele aparecer
+                                          Positioned(
+                                            top: 0,
+                                            left: 0,
+                                            right: 0,
+                                            height: 100,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                  colors: [
+                                                    Colors.black.withOpacity(
+                                                      0.3,
+                                                    ),
+                                                    Colors.transparent,
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
+                                collapseMode: CollapseMode.parallax,
                               ),
                               backgroundColor: Colors.white,
                               surfaceTintColor: Colors.white,
                               foregroundColor: Colors.black,
-                              leading: IconButton(
-                                onPressed: Get.back,
-                                icon: const Icon(
-                                  Icons.arrow_back_ios,
-                                  size: 20,
-                                ),
-                              ),
+                              // Título que aparece quando a imagem colapsa
+                              title: _fotos.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(left: 3),
+                                      child: Text(
+                                        'Produto',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
                             ),
                             SliverList(
                               delegate: SliverChildListDelegate(<Widget>[
@@ -451,18 +504,38 @@ class _ProdutoFormPageState extends State<ProdutoFormPage> {
                           left: 15,
                           right: 15,
                           bottom: 10,
+                          top: 10,
                         ),
                         child: ElevatedButton(
                           onPressed: _save,
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            minimumSize: Size(double.infinity, 45),
-                            elevation: 0,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
                           child: Text('Salvar'),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 15,
+                          right: 15,
+                          bottom: 10,
+                        ),
+                        child: OutlinedButton(
+                          onPressed: () => Get.back(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_back,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Voltar',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

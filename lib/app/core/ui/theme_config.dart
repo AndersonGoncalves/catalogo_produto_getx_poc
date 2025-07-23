@@ -27,6 +27,18 @@ class ThemeConfig {
       style: ElevatedButton.styleFrom(
         backgroundColor: _primaryColor,
         foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        minimumSize: Size(double.infinity, 45),
+        elevation: 0,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    ),
+
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        minimumSize: Size(double.infinity, 45),
+        side: BorderSide(color: _primaryColor),
       ),
     ),
 
