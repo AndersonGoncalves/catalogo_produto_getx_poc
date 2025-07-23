@@ -12,16 +12,16 @@ import 'package:catalogo_produto_poc/app/modules/produto/controller/produto_cont
 
 /// Binding principal da aplicação que configura as dependências globais
 /// Usado para injetar serviços e controllers que precisam estar disponíveis em toda a aplicação
+/// Fenix: Permite que o repositório seja recriado se for necessário
+/// Permanent: Mantém a instância do controller durante toda a vida útil da aplicação
 class AppBinding extends Bindings {
   @override
   void dependencies() {
-    // Fenix: Permite que o repositório seja recriado se for necessário
     Get.lazyPut<UsuarioRepositoryImpl>(
       () => UsuarioRepositoryImpl(firebaseAuth: FirebaseAuth.instance),
       fenix: true,
     );
 
-    // Fenix: Permite que o serviço seja recriado se for necessário
     Get.lazyPut<UsuarioServiceImpl>(
       () => UsuarioServiceImpl(
         usuarioRepository: Get.find<UsuarioRepositoryImpl>(),
@@ -29,19 +29,16 @@ class AppBinding extends Bindings {
       fenix: true,
     );
 
-    // Permanent: Mantém a instância do controller durante toda a vida útil da aplicação
     Get.put<UsuarioController>(
       UsuarioController(usuarioService: Get.find<UsuarioServiceImpl>()),
       permanent: true,
     );
 
-    // Fenix: Permite que o repositório seja recriado se for necessário
     Get.lazyPut<CarrinhoRepositoryImpl>(
       () => CarrinhoRepositoryImpl(),
       fenix: true,
     );
 
-    // Fenix: Permite que o serviço seja recriado se for necessário
     Get.lazyPut<CarrinhoServiceImpl>(
       () => CarrinhoServiceImpl(
         carrinhoRepository: Get.find<CarrinhoRepositoryImpl>(),
@@ -49,13 +46,11 @@ class AppBinding extends Bindings {
       fenix: true,
     );
 
-    // Permanent: Mantém a instância do controller durante toda a vida útil da aplicação
     Get.put<CarrinhoController>(
       CarrinhoController(carrinhoService: Get.find<CarrinhoServiceImpl>()),
       permanent: true,
     );
 
-    // Fenix: Permite que o repositório seja recriado se for necessário
     Get.lazyPut<ProdutoRepositoryImpl>(() {
       final usuarioService = Get.find<UsuarioServiceImpl>();
       return ProdutoRepositoryImpl(
@@ -64,7 +59,6 @@ class AppBinding extends Bindings {
       );
     }, fenix: true);
 
-    // Fenix: Permite que o serviço seja recriado se for necessário
     Get.lazyPut<ProdutoServiceImpl>(
       () => ProdutoServiceImpl(
         produtoRepository: Get.find<ProdutoRepositoryImpl>(),
@@ -72,7 +66,6 @@ class AppBinding extends Bindings {
       fenix: true,
     );
 
-    // Permanent: Mantém a instância do controller durante toda a vida útil da aplicação
     Get.put<ProdutoController>(
       ProdutoController(produtoService: Get.find<ProdutoServiceImpl>()),
       permanent: true,
