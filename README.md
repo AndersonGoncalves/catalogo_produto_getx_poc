@@ -13,6 +13,7 @@ Esse app utiliza o GetX para gerenciar rotas, gerenciar estados e gerenciar depe
   - [Flutter](https://flutter.dev/)  
   - [Dart](https://dart.dev/)
   - [GetX](https://pub.dev/packages/get)
+  - [dio](https://pub.dev/packages/dio)
 - *Backend:*  
   - [Realtime Database](https://firebase.google.com/products/realtime-database) (armazenamento dos produtos)
   - [Firebase Authentication](https://firebase.google.com/products/auth) (autenticação anônima e por e-mail)  
